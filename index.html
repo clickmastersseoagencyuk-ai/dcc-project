@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Duplicate Content Checker Tool for Your Website | ClickMasters</title>
+<meta name="description" content="Check your website for duplicate content instantly. Our free tool scans your pages, finds similar content, and helps improve your SEO rankings.">
+<style>
+  body { margin: 0; background: #0a0e17; padding: 40px 16px; }
+</style>
+</head>
+<body>
+<div id="dcc-app">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+  #dcc-app {
+    --dcc-bg: #0a0e17;
+    --dcc-card: #121722;
+    --dcc-card-2: #2b313d;
+    --dcc-border: #2a3040;
+    --dcc-text: #ffffff;
+    --dcc-text-dim: #9aa1ae;
+    --dcc-accent: #f7941d;
+    --dcc-accent-2: #ffb347;
+    --dcc-red: #ff5c72;
+    --dcc-orange: #ffcc4d;
+    --dcc-green: #3ecf8e;
+    --dcc-radius: 14px;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--dcc-bg);
+    color: var(--dcc-text);
+    padding: 28px;
+    border-radius: 18px;
+    max-width: 1250px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  #dcc-app * { box-sizing: border-box; }
+  #dcc-app h1 { font-size: 26px; font-weight: 800; margin: 0 0 4px 0; letter-spacing: -0.3px; }
+  #dcc-app .dcc-sub { color: var(--dcc-text-dim); font-size: 14px; margin: 0 0 24px 0; line-height: 1.5; }
+  #dcc-app .dcc-sub strong { color: var(--dcc-text); }
+
+  #dcc-app .dcc-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  #dcc-app .dcc-card { background: var(--dcc-card); border: 1px solid var(--dcc-border); border-radius: var(--dcc-radius); padding: 16px; }
+  #dcc-app .dcc-card .dcc-label { font-size: 12px; color: var(--dcc-text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  #dcc-app .dcc-card .dcc-value { font-size: 26px; font-weight: 700; }
+  #dcc-app .dcc-card .dcc-value.accent { color: var(--dcc-accent); }
+  #dcc-app .dcc-card .dcc-value.red { color: var(--dcc-red); }
+  #dcc-app .dcc-card .dcc-value.orange { color: var(--dcc-orange); }
+
+  #dcc-app .dcc-panel { background: var(--dcc-card); border: 1px solid var(--dcc-border); border-radius: var(--dcc-radius); padding: 20px; margin-bottom: 18px; }
+  #dcc-app .dcc-panel-title { font-size: 13px; font-weight: 600; color: var(--dcc-text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+  #dcc-app label.dcc-field-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--dcc-text); }
+  #dcc-app input[type="text"], #dcc-app textarea, #dcc-app select {
+    width: 100%; background: var(--dcc-card-2); border: 1px solid var(--dcc-border); color: var(--dcc-text);
+    padding: 10px 12px; border-radius: 8px; font-size: 13.5px; font-family: 'Inter', monospace;
+  }
+  #dcc-app input[type="text"]:focus, #dcc-app textarea:focus, #dcc-app select:focus { outline: none; border-color: var(--dcc-accent-2); }
+  #dcc-app textarea { font-family: 'JetBrains Mono', monospace; resize: vertical; line-height: 1.5; }
+
+  #dcc-app .dcc-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+  #dcc-app .dcc-row > div { flex: 1; min-width: 200px; }
+
+  #dcc-app button {
+    cursor: pointer; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; font-family: inherit;
+  }
+  #dcc-app .dcc-btn-secondary { background: var(--dcc-card-2); color: var(--dcc-text); border: 1px solid var(--dcc-border); padding: 11px 20px; border-radius: 30px; }
+  #dcc-app .dcc-btn-secondary:hover { border-color: var(--dcc-accent); }
+  #dcc-app .dcc-btn-primary { background: linear-gradient(135deg, var(--dcc-accent-2), var(--dcc-accent)); color: #ffffff; padding: 14px 30px; font-size: 15px; border-radius: 30px; box-shadow: 0 6px 20px rgba(247,148,29,0.25); }
+  #dcc-app .dcc-btn-primary:hover { filter: brightness(1.06); }
+  #dcc-app .dcc-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  #dcc-app .dcc-controls-row { display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:16px; }
+  #dcc-app .dcc-slider-wrap { display:flex; align-items:center; gap:10px; }
+  #dcc-app input[type="range"] { width: 140px; accent-color: var(--dcc-accent); }
+  #dcc-app .dcc-slider-val { font-weight:700; color: var(--dcc-accent); min-width: 40px; }
+
+  #dcc-app .dcc-status { font-size: 13px; color: var(--dcc-text-dim); margin: 14px 0; min-height: 18px; }
+  #dcc-app .dcc-progress-track { width:100%; height:6px; background:var(--dcc-card-2); border-radius:3px; overflow:hidden; margin: 10px 0; display:none; }
+  #dcc-app .dcc-progress-bar { height:100%; width:0%; background: linear-gradient(90deg, var(--dcc-accent-2), var(--dcc-accent)); transition: width 0.2s ease; }
+
+  #dcc-app table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  #dcc-app th { text-align: left; padding: 10px 10px; color: var(--dcc-text-dim); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--dcc-border); }
+  #dcc-app td { padding: 11px 10px; border-bottom: 1px solid var(--dcc-border); vertical-align: middle; }
+  #dcc-app tr:last-child td { border-bottom: none; }
+  #dcc-app a.dcc-link { color: var(--dcc-accent-2); text-decoration: none; word-break: break-all; }
+  #dcc-app a.dcc-link:hover { text-decoration: underline; }
+
+  #dcc-app .dcc-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+  #dcc-app .dcc-badge.red { background: rgba(255,92,114,0.15); color: var(--dcc-red); }
+  #dcc-app .dcc-badge.orange { background: rgba(255,180,84,0.15); color: var(--dcc-orange); }
+  #dcc-app .dcc-badge.green { background: rgba(62,207,142,0.15); color: var(--dcc-green); }
+  #dcc-app .dcc-badge.gray { background: rgba(139,147,167,0.15); color: var(--dcc-text-dim); }
+
+  #dcc-app .dcc-tabs { display: flex; gap: 6px; margin-bottom: 14px; border-bottom: 1px solid var(--dcc-border); }
+  #dcc-app .dcc-tab { padding: 10px 16px; font-size: 13.5px; font-weight: 600; color: var(--dcc-text-dim); cursor: pointer; border-bottom: 2px solid transparent; }
+  #dcc-app .dcc-tab.active { color: var(--dcc-text); border-bottom-color: var(--dcc-accent); }
+
+  #dcc-app .dcc-errors { font-size: 12.5px; color: var(--dcc-red); margin-top: 14px; line-height: 1.7; background: rgba(255,92,114,0.08); border: 1px solid rgba(255,92,114,0.25); border-radius: 8px; padding: 12px 14px; }
+  #dcc-app .dcc-empty { color: var(--dcc-text-dim); font-size: 13px; padding: 20px 0; text-align: center; }
+  #dcc-app .dcc-export { display:flex; justify-content:flex-end; margin-bottom: 10px; }
+</style>
+
+<h1>Duplicate Content Checker</h1>
+<p class="dcc-sub">Scans any set of web pages — yours or a competitor's — and flags ones with near-identical text, plus word count and readability per page.</p>
+
+<div class="dcc-summary" id="dcc-summary" style="display:none;">
+  <div class="dcc-card"><div class="dcc-label">Pages Scanned</div><div class="dcc-value" id="dcc-sum-pages">0</div></div>
+  <div class="dcc-card"><div class="dcc-label">Duplicate Pairs</div><div class="dcc-value red" id="dcc-sum-dupes">0</div></div>
+  <div class="dcc-card"><div class="dcc-label">Avg Similarity</div><div class="dcc-value accent" id="dcc-sum-avg">0%</div></div>
+  <div class="dcc-card"><div class="dcc-label">Thin Content Pages</div><div class="dcc-value orange" id="dcc-sum-thin">0</div></div>
+</div>
+
+<div class="dcc-panel">
+  <div class="dcc-panel-title">1. Add Pages to Scan</div>
+  <label class="dcc-field-label">Load automatically from sitemap</label>
+  <div class="dcc-row" style="margin-bottom:16px;">
+    <div><input id="dcc-sitemap" type="text" placeholder="https://yourdomain.com/sitemap.xml"></div>
+    <div style="flex:0 0 auto;"><button class="dcc-btn-secondary" id="dcc-load-sitemap">Load URLs</button></div>
+  </div>
+  <label class="dcc-field-label">Or paste URLs manually (one per line)</label>
+  <textarea id="dcc-urls" rows="6" placeholder="https://yourdomain.com/page-1
+https://yourdomain.com/page-2"></textarea>
+</div>
+
+<div class="dcc-panel">
+  <div class="dcc-panel-title">2. Scan Settings</div>
+  <div class="dcc-controls-row">
+    <div>
+      <label class="dcc-field-label">Sensitivity</label>
+      <select id="dcc-shingle">
+        <option value="3">High — catches short duplicate blocks</option>
+        <option value="5" selected>Medium — recommended</option>
+        <option value="8">Low — only near-identical pages</option>
+      </select>
+    </div>
+    <div class="dcc-slider-wrap">
+      <label class="dcc-field-label" style="margin:0;">Flag threshold</label>
+      <input type="range" id="dcc-threshold" min="10" max="95" value="50">
+      <span class="dcc-slider-val" id="dcc-threshold-val">50%</span>
+    </div>
+  </div>
+  <div style="margin-top:18px;">
+    <button class="dcc-btn-primary" id="dcc-scan">Scan for Duplicate Content</button>
+  </div>
+  <div class="dcc-progress-track" id="dcc-progress-track"><div class="dcc-progress-bar" id="dcc-progress-bar"></div></div>
+  <div class="dcc-status" id="dcc-status"></div>
+</div>
+
+<div id="dcc-results-wrap" style="display:none;">
+  <div class="dcc-export">
+    <button class="dcc-btn-secondary" id="dcc-export-csv">Export CSV Report</button>
+  </div>
+  <div class="dcc-tabs">
+    <div class="dcc-tab active" data-tab="dupes">Duplicate Pairs</div>
+    <div class="dcc-tab" data-tab="pages">Page Stats</div>
+  </div>
+  <div class="dcc-panel" id="dcc-tab-dupes"></div>
+  <div class="dcc-panel" id="dcc-tab-pages" style="display:none;"></div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  const root = document.getElementById('dcc-app');
+  const $ = (id) => root.querySelector('#' + id);
+  const statusEl = $('dcc-status');
+  const progressTrack = $('dcc-progress-track');
+  const progressBar = $('dcc-progress-bar');
+
+  // Calls this site's own serverless proxy function (works on Vercel and Netlify automatically)
+  const DCC_PROXY = '/api/proxy';
+  function proxyFetch(targetUrl) {
+    return fetch(DCC_PROXY + '?url=' + encodeURIComponent(targetUrl));
+  }
+
+  $('dcc-threshold').addEventListener('input', function(){
+    $('dcc-threshold-val').textContent = this.value + '%';
+  });
+
+  // Tabs
+  root.querySelectorAll('.dcc-tab').forEach(tab => {
+    tab.addEventListener('click', function(){
+      root.querySelectorAll('.dcc-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      const target = this.getAttribute('data-tab');
+      $('dcc-tab-dupes').style.display = target === 'dupes' ? 'block' : 'none';
+      $('dcc-tab-pages').style.display = target === 'pages' ? 'block' : 'none';
+    });
+  });
+
+  // --- Sitemap loader ---
+  $('dcc-load-sitemap').addEventListener('click', async function(){
+    const sitemapUrl = $('dcc-sitemap').value.trim();
+    if (!sitemapUrl) { statusEl.textContent = 'Enter a sitemap URL first.'; return; }
+    statusEl.textContent = 'Fetching sitemap...';
+    try {
+      const res = await proxyFetch(sitemapUrl);
+      const text = await res.text();
+      const xml = new DOMParser().parseFromString(text, 'application/xml');
+      const locs = Array.from(xml.getElementsByTagName('loc')).map(l => l.textContent.trim());
+      if (locs.length === 0) {
+        statusEl.textContent = 'No URLs found. If this is a sitemap index, paste one of the child sitemap URLs instead.';
+        return;
+      }
+      const existing = $('dcc-urls').value.trim();
+      $('dcc-urls').value = (existing ? existing + '\n' : '') + locs.join('\n');
+      statusEl.textContent = `Loaded ${locs.length} URLs from sitemap.`;
+    } catch (e) {
+      statusEl.textContent = 'Could not fetch sitemap: ' + (e.message || 'unknown error') + '. Check console (F12) for details.';
+    }
+  });
+
+  // --- Text extraction ---
+  function extractText(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script, style, nav, header, footer, noscript, svg, form').forEach(el => el.remove());
+    let text = (doc.body ? doc.body.innerText : doc.documentElement.innerText) || '';
+    return text.replace(/\s+/g, ' ').trim();
+  }
+
+  // --- Shingling / similarity ---
+  function getShingles(text, n) {
+    const words = text.toLowerCase().split(' ').filter(Boolean);
+    const shingles = new Set();
+    for (let i = 0; i <= words.length - n; i++) shingles.add(words.slice(i, i + n).join(' '));
+    return shingles;
+  }
+  function jaccard(a, b) {
+    if (a.size === 0 || b.size === 0) return 0;
+    let inter = 0;
+    for (const item of a) if (b.has(item)) inter++;
+    const union = a.size + b.size - inter;
+    return union === 0 ? 0 : inter / union;
+  }
+
+  // --- Readability (Flesch Reading Ease) ---
+  function countSyllables(word) {
+    word = word.toLowerCase().replace(/[^a-z]/g, '');
+    if (word.length <= 3) return 1;
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+    word = word.replace(/^y/, '');
+    const m = word.match(/[aeiouy]{1,2}/g);
+    return m ? m.length : 1;
+  }
+  function readability(text) {
+    const words = text.split(/\s+/).filter(Boolean);
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 3);
+    const wordCount = words.length;
+    const sentenceCount = Math.max(sentences.length, 1);
+    const syllables = words.reduce((acc, w) => acc + countSyllables(w), 0);
+    const score = 206.835 - 1.015 * (wordCount / sentenceCount) - 84.6 * (syllables / Math.max(wordCount, 1));
+    let label, level;
+    if (score >= 80) { label = 'Easy'; level = 'green'; }
+    else if (score >= 50) { label = 'Standard'; level = 'orange'; }
+    else { label = 'Difficult'; level = 'red'; }
+    return { wordCount, score: Math.round(score), label, level };
+  }
+
+  function badge(text, cls) { return `<span class="dcc-badge ${cls}">${text}</span>`; }
+  function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  let lastComparisons = [], lastPages = [];
+
+  // --- Main scan ---
+  $('dcc-scan').addEventListener('click', async function(){
+    const scanBtn = this;
+    const rawUrls = $('dcc-urls').value.split('\n').map(u => u.trim()).filter(Boolean);
+    const urls = [...new Set(rawUrls)];
+    const n = parseInt($('dcc-shingle').value, 10);
+    const threshold = parseInt($('dcc-threshold').value, 10);
+
+    $('dcc-results-wrap').style.display = 'none';
+    $('dcc-summary').style.display = 'none';
+    if (urls.length < 2) { statusEl.textContent = 'Add at least 2 URLs to compare.'; return; }
+
+    scanBtn.disabled = true;
+    progressTrack.style.display = 'block';
+    progressBar.style.width = '0%';
+
+    const pages = [];
+    const failed = [];
+
+    for (let i = 0; i < urls.length; i++) {
+      statusEl.textContent = `Fetching page ${i+1} of ${urls.length}...`;
+      progressBar.style.width = Math.round(((i) / urls.length) * 100) + '%';
+      try {
+        const res = await proxyFetch(urls[i]);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const html = await res.text();
+        const text = extractText(html);
+        if (text.length < 20) { failed.push(urls[i] + ' — page had almost no readable text'); continue; }
+        const read = readability(text);
+        pages.push({ url: urls[i], shingles: getShingles(text, n), wordCount: read.wordCount, readScore: read.score, readLabel: read.label, readLevel: read.level });
+      } catch (e) {
+        failed.push(urls[i] + ' — ' + (e.message || 'fetch failed') + '. Check console (F12) for details.');
+      }
+    }
+    progressBar.style.width = '100%';
+
+    if (pages.length < 2) {
+      statusEl.textContent = 'Could not fetch enough pages to compare.';
+      progressTrack.style.display = 'none';
+      scanBtn.disabled = false;
+      if (failed.length) {
+        $('dcc-results-wrap').style.display = 'block';
+        $('dcc-tab-dupes').innerHTML = '<div class="dcc-errors">' + failed.map(escapeHtml).join('<br>') + '</div>';
+      }
+      return;
+    }
+
+    statusEl.textContent = `Comparing ${pages.length} pages...`;
+    const comparisons = [];
+    for (let i = 0; i < pages.length; i++) {
+      for (let j = i + 1; j < pages.length; j++) {
+        const sim = jaccard(pages[i].shingles, pages[j].shingles) * 100;
+        comparisons.push({ a: pages[i].url, b: pages[j].url, sim });
+      }
+    }
+    comparisons.sort((a, b) => b.sim - a.sim);
+    lastComparisons = comparisons; lastPages = pages;
+
+    // Summary
+    const flagged = comparisons.filter(c => c.sim >= threshold);
+    const avgSim = comparisons.reduce((acc, c) => acc + c.sim, 0) / comparisons.length;
+    const thin = pages.filter(p => p.wordCount < 300);
+    $('dcc-sum-pages').textContent = pages.length;
+    $('dcc-sum-dupes').textContent = flagged.length;
+    $('dcc-sum-avg').textContent = avgSim.toFixed(1) + '%';
+    $('dcc-sum-thin').textContent = thin.length;
+    $('dcc-summary').style.display = 'grid';
+
+    // Duplicate pairs table
+    let dupHtml = '';
+    if (comparisons.length === 0) {
+      dupHtml = '<div class="dcc-empty">No pairs to compare.</div>';
+    } else {
+      dupHtml = '<table><tr><th>Page A</th><th>Page B</th><th>Similarity</th><th>Verdict</th></tr>';
+      comparisons.forEach(c => {
+        const pct = c.sim.toFixed(1);
+        let cls, label;
+        if (c.sim >= 80) { cls = 'red'; label = 'High overlap'; }
+        else if (c.sim >= threshold) { cls = 'orange'; label = 'Flagged — above threshold'; }
+        else if (c.sim >= 30) { cls = 'gray'; label = 'Some overlap'; }
+        else { cls = 'green'; label = 'Unique'; }
+        dupHtml += `<tr>
+          <td><a class="dcc-link" href="${c.a}" target="_blank">${escapeHtml(c.a)}</a></td>
+          <td><a class="dcc-link" href="${c.b}" target="_blank">${escapeHtml(c.b)}</a></td>
+          <td style="font-weight:700;">${pct}%</td>
+          <td>${badge(label, cls)}</td>
+        </tr>`;
+      });
+      dupHtml += '</table>';
+    }
+    if (failed.length) dupHtml += '<div class="dcc-errors"><strong>Could not check these:</strong><br>' + failed.map(escapeHtml).join('<br>') + '</div>';
+    $('dcc-tab-dupes').innerHTML = dupHtml;
+
+    // Page stats table
+    let pageHtml = '<table><tr><th>Page</th><th>Word Count</th><th>Readability</th><th>Flags</th></tr>';
+    pages.forEach(p => {
+      const flags = [];
+      if (p.wordCount < 300) flags.push(badge('Thin content', 'orange'));
+      const dupeCount = comparisons.filter(c => (c.a === p.url || c.b === p.url) && c.sim >= threshold).length;
+      if (dupeCount > 0) flags.push(badge(dupeCount + ' duplicate match' + (dupeCount > 1 ? 'es' : ''), 'red'));
+      if (flags.length === 0) flags.push(badge('OK', 'green'));
+      pageHtml += `<tr>
+        <td><a class="dcc-link" href="${p.url}" target="_blank">${escapeHtml(p.url)}</a></td>
+        <td>${p.wordCount}</td>
+        <td>${badge(p.readLabel + ' (' + p.readScore + ')', p.readLevel)}</td>
+        <td>${flags.join(' ')}</td>
+      </tr>`;
+    });
+    pageHtml += '</table>';
+    $('dcc-tab-pages').innerHTML = pageHtml;
+
+    $('dcc-results-wrap').style.display = 'block';
+    statusEl.textContent = `Done — compared ${pages.length} pages (${comparisons.length} pairs).`;
+    progressTrack.style.display = 'none';
+    scanBtn.disabled = false;
+  });
+
+  // --- CSV export ---
+  $('dcc-export-csv').addEventListener('click', function(){
+    if (!lastComparisons.length) return;
+    let csv = 'Page A,Page B,Similarity %\n';
+    lastComparisons.forEach(c => { csv += `"${c.a}","${c.b}",${c.sim.toFixed(1)}\n`; });
+    csv += '\nPage,Word Count,Readability Score,Readability Label\n';
+    lastPages.forEach(p => { csv += `"${p.url}",${p.wordCount},${p.readScore},${p.readLabel}\n`; });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'duplicate-content-report.csv';
+    link.click();
+  });
+})();
+</script>
+</body>
+</html>

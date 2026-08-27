@@ -1,0 +1,6 @@
+{
+  "name": "duplicate-content-checker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Free duplicate content checker with a serverless proxy for cross-site scanning."
+}
