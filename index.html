@@ -7,6 +7,9 @@
 <meta name="description" content="Check your website for duplicate content instantly. Our free tool scans your pages, finds similar content, and helps improve your SEO rankings.">
 <style>
   body { margin: 0; background: #0a0e17; padding: 40px 16px; }
+  @media (max-width: 640px) {
+    body { padding: 16px 8px; }
+  }
 </style>
 </head>
 <body>
@@ -100,6 +103,46 @@
   #dcc-app .dcc-errors { font-size: 12.5px; color: var(--dcc-red); margin-top: 14px; line-height: 1.7; background: rgba(255,92,114,0.08); border: 1px solid rgba(255,92,114,0.25); border-radius: 8px; padding: 12px 14px; }
   #dcc-app .dcc-empty { color: var(--dcc-text-dim); font-size: 13px; padding: 20px 0; text-align: center; }
   #dcc-app .dcc-export { display:flex; justify-content:flex-end; margin-bottom: 10px; }
+
+  /* Table scrolls horizontally instead of breaking layout on narrow screens */
+  #dcc-app .dcc-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #dcc-app .dcc-table-scroll table { min-width: 560px; }
+
+  /* --- Mobile responsiveness --- */
+  @media (max-width: 640px) {
+    #dcc-app { padding: 16px; border-radius: 12px; }
+    #dcc-app h1 { font-size: 20px; }
+    #dcc-app .dcc-sub { font-size: 13px; margin-bottom: 18px; }
+
+    #dcc-app .dcc-summary { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+    #dcc-app .dcc-card { padding: 12px; }
+    #dcc-app .dcc-card .dcc-value { font-size: 20px; }
+    #dcc-app .dcc-card .dcc-label { font-size: 10.5px; }
+
+    #dcc-app .dcc-panel { padding: 16px; }
+    #dcc-app .dcc-row { flex-direction: column; align-items: stretch; }
+    #dcc-app .dcc-row > div { min-width: 100%; }
+    #dcc-app .dcc-row > div:last-child button { width: 100%; }
+
+    #dcc-app .dcc-controls-row { flex-direction: column; align-items: stretch; gap: 14px; }
+    #dcc-app .dcc-slider-wrap { justify-content: space-between; }
+    #dcc-app input[type="range"] { flex: 1; width: auto; }
+
+    #dcc-app .dcc-btn-primary { width: 100%; padding: 14px 20px; }
+    #dcc-app .dcc-export { justify-content: stretch; }
+    #dcc-app .dcc-export button { width: 100%; }
+
+    #dcc-app .dcc-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+    #dcc-app .dcc-tab { flex: 0 0 auto; padding: 10px 14px; font-size: 12.5px; white-space: nowrap; }
+
+    #dcc-app th, #dcc-app td { padding: 9px 8px; font-size: 12px; }
+    #dcc-app .dcc-badge { font-size: 10.5px; padding: 2px 8px; }
+  }
+
+  @media (max-width: 380px) {
+    #dcc-app .dcc-summary { grid-template-columns: 1fr 1fr; }
+    #dcc-app h1 { font-size: 18px; }
+  }
 </style>
 
 <h1>Duplicate Content Checker</h1>
@@ -156,8 +199,8 @@ https://yourdomain.com/page-2"></textarea>
     <div class="dcc-tab active" data-tab="dupes">Duplicate Pairs</div>
     <div class="dcc-tab" data-tab="pages">Page Stats</div>
   </div>
-  <div class="dcc-panel" id="dcc-tab-dupes"></div>
-  <div class="dcc-panel" id="dcc-tab-pages" style="display:none;"></div>
+  <div class="dcc-panel dcc-table-scroll" id="dcc-tab-dupes"></div>
+  <div class="dcc-panel dcc-table-scroll" id="dcc-tab-pages" style="display:none;"></div>
 </div>
 
 </div>
